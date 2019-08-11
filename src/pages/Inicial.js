@@ -5,7 +5,9 @@ import logo from '../assets/logo.png';
 
 export default function Inicial(){
 
-    const [code, setCode] = useState('')
+    const [code, setCode] = useState('');
+    const [code1, setCode1] = useState('');
+    const [correspondencia, setCorrespondencia] = useState(null)
 
     function handleSearch(){
         const codeToUpperCase = code.toUpperCase();
@@ -18,10 +20,13 @@ export default function Inicial(){
 
         if (valores[codeToUpperCase] !== undefined){
             console.log(`o valor de ${codeToUpperCase} é ${valores[codeToUpperCase]}`);
+            setCode1(valores[codeToUpperCase]);
         }
         else {
             console.log('valor nao encontrado ou inválido');
         }
+
+        setCorrespondencia(true)
     }
 
     return (
@@ -47,7 +52,23 @@ export default function Inicial(){
             </TouchableOpacity>
 
 
+            { correspondencia && (
+
+                <View style={styles.matchContainer}>
+
+                    <Text style={styles.matchName}>{code1}</Text>
+                    <Text style={styles.matchBio}>adeusss</Text>
+
+                    <TouchableOpacity>  
+                        <Text style={styles.closeMatch}>FECHAR</Text>
+                    </TouchableOpacity>
+                </View>
+
+            )}
+
         </KeyboardAvoidingView>
+
+        
     );
 }
 
@@ -80,5 +101,35 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontWeight: 'bold',
         textAlign: 'center',
-    }
+    },
+    matchName:{
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: '#FFF',
+    },
+
+    matchContainer: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    matchBio:{
+        marginTop:10,
+        fontSize: 16,
+        color: 'rgba(255,255,255,0.8)',
+        lineHeight: 24,
+        textAlign: 'center',
+        paddingHorizontal: 30,
+    },
+
+    closeMatch:{
+        fontSize:16,
+        color: 'rgba(255,255,255,0.8)',
+        textAlign: 'center',
+        marginTop: 30,
+        fontWeight: 'bold'
+    },
+
 });
