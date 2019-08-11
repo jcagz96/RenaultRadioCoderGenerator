@@ -1,35 +1,40 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Platform } from 'react-native';
+import { KeyboardAvoidingView, View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Platform, Keyboard } from 'react-native';
 
-import logo from '../assets/logo.png';
+import logo from '../assets/logo1.png';
 
 export default function Inicial(){
 
-    const [code, setCode] = useState('');
-    const [code1, setCode1] = useState('');
-    const [correspondencia, setCorrespondencia] = useState(null)
+    const [precode, setPrecode] = useState('');
+    //const [code, setCode] = useState('');
+    const [correspondencia, setCorrespondencia] = useState(null);
 
     function handleSearch(){
-        const codeToUpperCase = code.toUpperCase();
-        console.log(`Veio da  app: ${codeToUpperCase}`);
+        
+        const precodeToUpperCase = precode.toUpperCase();
+        console.log(`Veio da  app: ${precodeToUpperCase}`);
 
         const valores = { A100: '0070',
         A101: '0041',
         A102: '0012',
         A103: '0082'};
 
-        if (valores[codeToUpperCase] !== undefined){
-            console.log(`o valor de ${codeToUpperCase} é ${valores[codeToUpperCase]}`);
-            setCode1(valores[codeToUpperCase]);
+        if (valores[precodeToUpperCase] !== undefined){        
+            Keyboard.dismiss();
+            console.log(`o valor de ${precodeToUpperCase} é ${valores[precodeToUpperCase]}`);
+            //setCode(valores[precodeToUpperCase]);
+            setPrecode(valores[precodeToUpperCase])
+            setCorrespondencia(true);
         }
         else {
             console.log('valor nao encontrado ou inválido');
         }
 
-        setCorrespondencia(true)
+        
     }
 
     return (
+        
         <KeyboardAvoidingView
             behavior="padding"
             enabled={ Platform.OS === 'ios'}
@@ -43,8 +48,8 @@ export default function Inicial(){
                 keyboardType="ascii-capable"
                 placeholder="Digite"
                 placeholderTextColor="#999"
-                value={code}
-                onChangeText={setCode}
+                value={precode}
+                onChangeText={setPrecode}
                 maxLength={4}/>
 
             <TouchableOpacity style={styles.button} onPress={handleSearch}>
@@ -54,21 +59,15 @@ export default function Inicial(){
 
             { correspondencia && (
 
-                <View style={styles.matchContainer}>
-
-                    <Text style={styles.matchName}>{code1}</Text>
-                    <Text style={styles.matchBio}>adeusss</Text>
-
-                    <TouchableOpacity>  
-                        <Text style={styles.closeMatch}>FECHAR</Text>
+                <View style={styles.correspondenciaContainer}>
+                    <Text style={styles.correspondenciaBio}>O código do seu rádio é: </Text>
+                    <Text style={styles.correspondenciaName}>{precode}</Text>
+                    <TouchableOpacity onPress={()=> {setCorrespondencia(null); setPrecode('');}}>
+                        <Text style={styles.correspondenciaClose}>FECHAR</Text>
                     </TouchableOpacity>
                 </View>
-
             )}
-
         </KeyboardAvoidingView>
-
-        
     );
 }
 
@@ -102,20 +101,20 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    matchName:{
+    correspondenciaName:{
         fontSize: 26,
         fontWeight: 'bold',
         color: '#FFF',
     },
 
-    matchContainer: {
+    correspondenciaContainer: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'rgba(255, 26, 26, 0.98)',
         justifyContent: 'center',
         alignItems: 'center',
     },
 
-    matchBio:{
+    correspondenciaBio:{
         marginTop:10,
         fontSize: 16,
         color: 'rgba(255,255,255,0.8)',
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
 
-    closeMatch:{
+    correspondenciaClose:{
         fontSize:16,
         color: 'rgba(255,255,255,0.8)',
         textAlign: 'center',
